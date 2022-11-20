@@ -1,0 +1,16 @@
+.Layout {
+    display: grid;
+    grid-template-columns: max-content auto;
+    grid-template-areas: "sidebar content";
+    height: 100vh;
+
+    &_Content {
+        overflow: hidden;
+        grid-area: content;
+        overflow-y: auto;
+    }
+
+    &_Sidebar {
+        grid-area: sidebar;
+    }
+}

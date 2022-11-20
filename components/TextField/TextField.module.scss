@@ -1,0 +1,47 @@
+@import "styles/_colors.scss";
+@import "styles/_eases.scss";
+
+.TextField {
+    position: relative;
+
+    &_Input {
+        border: solid 1px $blue-500;
+        border-radius: 8px;
+        padding: 8px;
+        transition: padding 250ms $ease-emphasized-accelerate;
+
+        &::placeholder {
+            color: transparent;
+        }
+
+        &:focus {
+            border-color: $orange-500;
+            outline: 0;
+        }
+
+        &:not(:placeholder-shown):invalid {
+            border-color: $red-500;
+        }
+
+        &:not(:placeholder-shown):valid {
+            border-color: $green-500;
+        }
+    }
+
+    &_Label {
+        position: absolute;
+        top: 9px;
+        left: 9px;
+        transition: font-size 250ms $ease-emphasized-accelerate;
+    }
+
+    &_Input:not(:placeholder-shown) {
+        padding: 24px 8px 8px 8px;
+        transition-timing-function: $ease-emphasized-decelerate;
+    }
+
+    &_Input:not(:placeholder-shown) + &_Label {
+        font-size: 14px;
+        transition-timing-function: $ease-emphasized-decelerate;
+    }
+}

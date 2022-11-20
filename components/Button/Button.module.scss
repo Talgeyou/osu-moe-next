@@ -1,0 +1,25 @@
+@import "styles/_colors.scss";
+@import "styles/_eases.scss";
+
+.Button {
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: $blue-500;
+    color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 250ms $ease-emphasized-accelerate;
+
+    &:focus {
+        outline-color: $orange-500;
+    }
+
+    &:hover,
+    &:active {
+        cursor: pointer;
+        background-color: $blue-300;
+        transition-timing-function: $ease-emphasized-decelerate;
+    }
+}

@@ -1,0 +1,73 @@
+@import "styles/_elevations.scss";
+@import "styles/_colors.scss";
+
+.Score {
+    width: 100%;
+    display: grid;
+    align-items: center;
+    grid-template-columns: 64px 64px auto 128px;
+    gap: 16px;
+
+    background-color: $gray-50;
+    box-shadow: $elevation-1;
+    padding: 8px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 64px 32px auto 80px;
+    }
+
+    &_Order {
+        text-align: center;
+        border-right: solid 1px $gray-400;
+    }
+
+    &_Image {
+        overflow: hidden;
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+        box-shadow: $elevation-1;
+
+        @media (max-width: 768px) {
+            width: 32px;
+            height: 32px;
+        }
+    }
+
+    &_Song {
+        width: fit-content;
+        display: grid;
+        row-gap: 0.25em;
+        column-gap: 0.5em;
+        grid-template-areas:
+            "title version"
+            "artist artist";
+    }
+
+    &_Artist {
+        grid-area: artist;
+        font-size: 14px;
+    }
+
+    &_Title {
+        grid-area: title;
+        font-size: 16px;
+    }
+
+    &_Version {
+        grid-area: version;
+        font-size: 16px;
+    }
+
+    &_PP {
+        font-size: 24px;
+
+        @media (max-width: 768px) {
+            font-size: 18px;
+        }
+    }
+
+    &_Weightness {
+        font-size: 12px;
+    }
+}

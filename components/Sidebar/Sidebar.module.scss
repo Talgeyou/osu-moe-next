@@ -1,0 +1,122 @@
+@import "styles/_elevations.scss";
+@import "styles/_eases.scss";
+@import "styles/_colors.scss";
+
+.Sidebar {
+    overflow: hidden;
+    height: 100%;
+    width: 64px;
+    box-shadow: $elevation-1;
+    transition: width 250ms $ease-emphasized-accelerate;
+
+    &:hover {
+        width: 200px;
+        transition-timing-function: $ease-emphasized-decelerate;
+    }
+
+    &_Logo {
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    &_LogoBurger,
+    &_LogoClose {
+        font-size: 32px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &_LogoText {
+        opacity: 0;
+        transition: opacity 250ms $ease-emphasized-decelerate;
+    }
+
+    &:hover &_LogoText {
+        opacity: 1;
+        transition-timing-function: $ease-emphasized-accelerate;
+    }
+
+    &_LogoBurger {
+        transition: opacity 250ms $ease-emphasized-decelerate;
+    }
+
+    &:hover &_LogoBurger {
+        opacity: 0;
+        transition-timing-function: $ease-emphasized-accelerate;
+    }
+
+    &_Items {
+        list-style: none;
+        padding-inline-start: 0;
+        transition: padding-inline-start 250ms $ease-emphasized-decelerate;
+    }
+
+    &:hover &_Items &_Items {
+        padding-inline-start: 8px;
+        transition-timing-function: $ease-emphasized-accelerate;
+    }
+
+    &_Link {
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: $gray-400;
+        transition: color 250ms $ease-emphasized-decelerate;
+
+        &_active,
+        &:hover {
+            transition-timing-function: $ease-emphasized-accelerate;
+        }
+
+        &_active {
+            color: $black;
+        }
+
+        &:hover {
+            color: $deep-orange-500;
+        }
+    }
+
+    &_Icon {
+        font-size: 32px;
+    }
+
+    &_Label {
+        opacity: 0;
+        transition: opacity 250ms $ease-emphasized-decelerate;
+    }
+
+    &:hover &_Label {
+        opacity: 1;
+        transition-timing-function: $ease-emphasized-accelerate;
+    }
+
+    &_Actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 16px;
+    }
+
+    &_Action {
+        gap: 8px;
+    }
+
+    &_ActionIcon {
+        font-size: 16px;
+    }
+
+    &_ActionText {
+        display: none;
+    }
+
+    &:hover &_ActionText {
+        display: block;
+    }
+}
