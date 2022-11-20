@@ -1,10 +1,9 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import axios from "axios";
 import { getToken } from "next-auth/jwt";
 import { OsuScore, OsuUser } from "types/osu.types";
 import { Layout, PlayerDetails } from "components";
-import { fetchBestScores, fetchPlayer } from "helpers/api";
+import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 
 type Props = { player: OsuUser | null; scores: OsuScore[] | null };
 
@@ -27,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
     if (typeof params?.username !== "string") return { props: { player: null, scores: null } };
 
-    const token = await getToken({ req });
+    const token = (await getToken({ req })) || (await fetchGuestToken());
 
     const player = await fetchPlayer(params.username, token?.accessToken);
 

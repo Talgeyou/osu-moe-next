@@ -1,6 +1,5 @@
-import axios from "axios";
 import { Layout, PlayerDetails } from "components";
-import { fetchBestScores, fetchPlayer } from "helpers/api";
+import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 import { GetServerSideProps } from "next";
 import { getToken } from "next-auth/jwt";
 import React from "react";
@@ -26,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (
     if (!context.params?.players?.length || typeof context.params.players === "string")
         return { props: { players: [] } };
 
-    const token = await getToken({ req: context.req });
+    const token = (await getToken({ req: context.req })) || (await fetchGuestToken());
 
     let players: { player: OsuUser; scores: OsuScore[] }[] = [];
 
