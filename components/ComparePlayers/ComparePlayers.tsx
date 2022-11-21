@@ -1,12 +1,22 @@
 import React, { memo, useMemo } from "react";
 import Image from "next/image";
 import classNames from "classnames";
-import { Bar, Doughnut } from "react-chartjs-2";
-import { BarElement, CategoryScale, Chart, Legend, LinearScale, Title, Tooltip } from "chart.js";
+import { Bar, Doughnut, Scatter } from "react-chartjs-2";
+import {
+    BarElement,
+    CategoryScale,
+    Chart,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip,
+    PointElement,
+    LineElement,
+} from "chart.js";
 import { OsuScore, OsuUser } from "types/osu.types";
 import { Card } from "components";
 import {
-    getRankBarProps,
+    getRankScatterProps,
     getAccuracyBarProps,
     getPlaycountBarProps,
     getPlaytimeBarProps,
@@ -15,14 +25,23 @@ import {
 } from "./helpers";
 import styles from "./ComparePlayers.module.scss";
 
-Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+Chart.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    PointElement,
+    LineElement,
+);
 
 type Props = { players: { player: OsuUser; scores: OsuScore[] }[] };
 
 function ComparePlayers({ players }: Props) {
     const playersList = useMemo(() => players.map(({ player }) => player), [players]);
 
-    const rankBarProps = getRankBarProps(playersList);
+    const rankScatterProps = getRankScatterProps(playersList);
     const accuracyBarProps = getAccuracyBarProps(playersList);
     const playcountBarProps = getPlaycountBarProps(playersList);
     const playtimeBarProps = getPlaytimeBarProps(playersList);
@@ -58,7 +77,7 @@ function ComparePlayers({ players }: Props) {
             </div>
             <div className={styles["ComparePlayers_Cards"]}>
                 <Card className={styles["ComparePlayers_Card"]} label="Rank">
-                    <Bar {...rankBarProps} />
+                    <Scatter {...rankScatterProps} />
                 </Card>
                 <Card className={styles["ComparePlayers_Card"]} label="Perfomance Points">
                     <Bar {...ppBarProps} />

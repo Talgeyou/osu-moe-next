@@ -1,5 +1,7 @@
-import { ChartData } from "chart.js";
+import { ChartData, ScatterDataPoint } from "chart.js";
+import { ComponentProps } from "react";
 import { OsuUser } from "types/osu.types";
+import { Bar, Scatter } from "react-chartjs-2";
 
 export function getAccuracyBarData(players: OsuUser[]): ChartData<"bar", number[], string> {
     return {
@@ -14,7 +16,13 @@ export function getAccuracyBarData(players: OsuUser[]): ChartData<"bar", number[
     };
 }
 
-export function getBarOptions(scales?: { min: number; max: number }) {
+export function getBarOptions({
+    min,
+    max,
+}: {
+    min: number;
+    max: number;
+}): ComponentProps<typeof Bar>["options"] {
     return {
         indexAxis: "y" as const,
         responsive: true,
@@ -30,7 +38,16 @@ export function getBarOptions(scales?: { min: number; max: number }) {
         },
         scales: {
             x: {
-                ...scales,
+                min,
+                max,
+                grid: {
+                    display: false,
+                },
+            },
+            y: {
+                grid: {
+                    display: false,
+                },
             },
         },
     };
@@ -52,32 +69,59 @@ export function getAccuracyBarProps(players: OsuUser[]) {
     };
 }
 
-export function getRankBarData(players: OsuUser[]): ChartData<"bar", number[], string> {
+export function getRankBarData(players: OsuUser[]): ComponentProps<typeof Scatter>["data"] {
     return {
         labels: players.map((player) => player.username),
         datasets: [
             {
                 label: "Rank",
-                data: players.map((player) => player.statistics.global_rank),
+                data: players.map((player, index) => ({
+                    y: player.statistics.global_rank,
+                    x: index,
+                })),
                 backgroundColor: "#4caf50",
             },
         ],
     };
 }
 
-export function getRankBarProps(players: OsuUser[]) {
-    const ranks = players.map((player) => player.statistics.global_rank);
+export function getRankScatterOptions(
+    usernames: string[],
+): ComponentProps<typeof Scatter>["options"] {
+    return {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: (item) => {
+                        const datasetLabel = item.dataset.label;
+                        const datasetItem = item.dataset.data[item.dataIndex] as ScatterDataPoint;
+                        return `${datasetLabel}: #${datasetItem.y}`;
+                    },
+                },
+            },
+        },
+        scales: {
+            x: {
+                ticks: {
+                    stepSize: 1,
+                    callback: (value, index, values) => {
+                        return usernames[index];
+                    },
+                },
+            },
+            y: {
+                offset: true,
+                min: 1,
+                reverse: true,
+            },
+        },
+    };
+}
 
-    const maxRank = Math.max(...ranks);
-    const minRank = Math.min(...ranks);
-    const deltaRanks = maxRank - minRank;
-
+export function getRankScatterProps(players: OsuUser[]): ComponentProps<typeof Scatter> {
     return {
         data: getRankBarData(players),
-        options: getBarOptions({
-            min: Math.max(minRank - deltaRanks, 1),
-            max: maxRank,
-        }),
+        options: getRankScatterOptions(players.map((player) => player.username)),
     };
 }
 
