@@ -22,7 +22,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         <SessionProvider session={session}>
             <Head>
                 <title>osu!Moe</title>
-                <meta name="keywords" content="osu, tools, players, users, comparing, data"></meta>
+                <meta
+                    name="keywords"
+                    content="osu, moe, osu-moe, osu moe, tools, players, users, comparing, data"
+                ></meta>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />\
             </Head>
             <Layout>
