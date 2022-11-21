@@ -1,4 +1,4 @@
-import { Layout, PlayerDetails } from "components";
+import { ComparePlayers, Layout, PlayerDetails } from "components";
 import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 import { GetServerSideProps } from "next";
 import { getToken } from "next-auth/jwt";
@@ -10,11 +10,7 @@ type Props = { players: { player: OsuUser; scores: OsuScore[] }[] };
 function ComparePage({ players }: Props) {
     return (
         <Layout>
-            <div style={{ display: "flex" }}>
-                {players.map(({ player, scores }) => (
-                    <PlayerDetails key={player.id} player={player} scores={scores} />
-                ))}
-            </div>
+            <ComparePlayers players={players} />
         </Layout>
     );
 }

@@ -15,6 +15,11 @@ const nextConfig = {
                 hostname: "assets.ppy.sh",
                 pathname: "/**",
             },
+            {
+                protocol: "https",
+                hostname: "osu.ppy.sh",
+                pathname: "/**",
+            },
         ],
     },
 };

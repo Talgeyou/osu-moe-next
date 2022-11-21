@@ -1,0 +1,98 @@
+@import "styles/_colors.scss";
+@import "styles/_elevations.scss";
+
+.ComparePlayers {
+    &_Header {
+        margin-top: -100px;
+        padding: 16px 16px 16px 16px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: space-around;
+        column-gap: 32px;
+        row-gap: 16px;
+        background-color: $gray-50;
+        align-items: flex-end;
+        margin-bottom: 120px;
+        box-shadow: $elevation-1;
+
+        @media (max-width: 1440px) {
+            grid-template-columns: repeat(2, 1fr);
+            margin-bottom: 20px;
+        }
+    }
+
+    &_Player {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+
+        @media (max-width: 1440px) {
+            align-items: center;
+        }
+    }
+
+    &_Image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+        width: 200px;
+        height: 200px;
+        transform: translateY(50%);
+        box-shadow: $elevation-1;
+
+        @media (max-width: 1440px) {
+            transform: translateY(0);
+        }
+    }
+
+    &_Avatar {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    &_Username {
+        font-size: 36px;
+        font-weight: 700;
+
+        @media (max-width: 1440px) {
+            text-align: center;
+        }
+    }
+
+    &_Country {
+        @media (max-width: 1440px) {
+            text-align: center;
+        }
+    }
+
+    &_Rank {
+        font-size: 72px;
+        font-weight: 400;
+        color: $gray-400;
+
+        @media (max-width: 1440px) {
+            text-align: center;
+        }
+    }
+
+    &_Cards {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: center;
+        gap: 20px;
+
+        @media (max-width: 1280px) {
+            grid-template-columns: auto;
+        }
+    }
+
+    &_Card {
+        width: 100%;
+    }
+}
