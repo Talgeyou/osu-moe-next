@@ -87,9 +87,9 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
         return { props: { player: null, scores: null }, revalidate: 30 };
     }
 
-    // const scores = await fetchBestScores(player.id, token?.accessToken);
+    const scores = await fetchBestScores(player.id, token?.accessToken);
 
-    return { props: { player, scores: [] }, revalidate: 30 };
+    return { props: { player, scores }, revalidate: 30 };
 };
 
 export default PlayerPage;
