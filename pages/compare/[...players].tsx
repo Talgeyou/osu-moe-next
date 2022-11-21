@@ -2,13 +2,29 @@ import { ComparePlayers } from "components";
 import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 import { GetServerSideProps } from "next";
 import { getToken } from "next-auth/jwt";
+import Head from "next/head";
 import React from "react";
 import { OsuScore, OsuUser } from "types/osu.types";
 
 type Props = { players: { player: OsuUser; scores: OsuScore[] }[] };
 
 function ComparePage({ players }: Props) {
-    return <ComparePlayers players={players} />;
+    return (
+        <>
+            <Head>
+                <title>
+                    osu!Moe | Comparing {players.map(({ player }) => player.username).join(", ")}
+                </title>
+                <meta
+                    name="description"
+                    content={`Comparing all statistics of ${players
+                        .map(({ player }) => player.username)
+                        .join(", ")}`}
+                />
+            </Head>
+            <ComparePlayers players={players} />
+        </>
+    );
 }
 
 export const getServerSideProps: GetServerSideProps = async (

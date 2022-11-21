@@ -6,6 +6,7 @@ import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { PlayerDetailsSkeleton } from "components/PlayerDetails";
+import Head from "next/head";
 
 type Props = { player: OsuUser | null; scores: OsuScore[] | null };
 
@@ -13,14 +14,36 @@ function PlayerPage({ player, scores }: Props) {
     const router = useRouter();
 
     if (router.isFallback) {
-        return <PlayerDetailsSkeleton />;
+        return (
+            <>
+                <Head>
+                    <title>osu!Moe | Loading...</title>
+                </Head>
+                <PlayerDetailsSkeleton />
+            </>
+        );
     }
 
     if (!player) {
-        return <h1>Player has not been found</h1>;
+        return (
+            <>
+                <Head>
+                    <title>osu!Moe | Not Found</title>
+                </Head>
+                <h1>Player has not been found</h1>
+            </>
+        );
     }
 
-    return <PlayerDetails player={player} scores={scores} />;
+    return (
+        <>
+            <Head>
+                <title>osu!Moe | {player.username} statistics</title>
+                <meta name="description" content={`all statistics of ${player.username}`}></meta>
+            </Head>
+            <PlayerDetails player={player} scores={scores} />
+        </>
+    );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
