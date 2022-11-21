@@ -1,4 +1,4 @@
-import { ComparePlayers, Layout, PlayerDetails } from "components";
+import { ComparePlayers } from "components";
 import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
 import { GetServerSideProps } from "next";
 import { getToken } from "next-auth/jwt";
@@ -8,11 +8,7 @@ import { OsuScore, OsuUser } from "types/osu.types";
 type Props = { players: { player: OsuUser; scores: OsuScore[] }[] };
 
 function ComparePage({ players }: Props) {
-    return (
-        <Layout>
-            <ComparePlayers players={players} />
-        </Layout>
-    );
+    return <ComparePlayers players={players} />;
 }
 
 export const getServerSideProps: GetServerSideProps = async (

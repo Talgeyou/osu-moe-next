@@ -1,0 +1,37 @@
+@import "styles/_colors.scss";
+@import "styles/_eases.scss";
+
+.Skeleton {
+    overflow: hidden;
+    position: relative;
+    background-color: $gray-200;
+    width: 100%;
+    height: 100%;
+    min-height: 1em;
+    min-width: 200px;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 50px;
+        background: linear-gradient(
+            90deg,
+            rgba(238, 238, 238, 1) 0%,
+            rgba(245, 245, 245, 1) 50%,
+            rgba(238, 238, 238, 1) 100%
+        );
+        animation: slideFromLeftToRight 2000ms $ease-emphasized-accelerate infinite;
+    }
+}
+
+@keyframes slideFromLeftToRight {
+    0% {
+        left: -50px;
+    }
+    100% {
+        left: calc(100% + 50px);
+    }
+}

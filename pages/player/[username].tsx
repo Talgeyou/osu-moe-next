@@ -1,42 +1,72 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import { getToken } from "next-auth/jwt";
+import { GetStaticPaths, GetStaticProps } from "next";
 import { OsuScore, OsuUser } from "types/osu.types";
-import { Layout, PlayerDetails } from "components";
+import { PlayerDetails } from "components";
 import { fetchBestScores, fetchGuestToken, fetchPlayer } from "helpers/api";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { PlayerDetailsSkeleton } from "components/PlayerDetails";
 
 type Props = { player: OsuUser | null; scores: OsuScore[] | null };
 
 function PlayerPage({ player, scores }: Props) {
+    const router = useRouter();
+
+    if (router.isFallback) {
+        return <PlayerDetailsSkeleton />;
+    }
+
     if (!player) {
         return <h1>Player has not been found</h1>;
     }
 
-    return (
-        <Layout>
-            <PlayerDetails player={player} scores={scores} />
-        </Layout>
-    );
+    return <PlayerDetails player={player} scores={scores} />;
 }
 
-export const getServerSideProps: GetServerSideProps = async (
-    context,
-): Promise<{ props: Props }> => {
-    const { params, req } = context;
+export const getStaticPaths: GetStaticPaths = async () => {
+    const token = await fetchGuestToken();
 
-    if (typeof params?.username !== "string") return { props: { player: null, scores: null } };
+    const data = await axios
+        .get<{ ranking: { user: OsuUser }[] }>(
+            "https://osu.ppy.sh/api/v2/rankings/osu/performance",
+            {
+                headers: {
+                    Authorization: `Bearer ${token?.accessToken}`,
+                },
+            },
+        )
+        .then((res) => res.data)
+        .catch((e) => console.log(e.message));
 
-    const token = (await getToken({ req })) || (await fetchGuestToken());
+    return {
+        paths: data
+            ? data.ranking.map((ranking) => ({
+                  params: {
+                      username: ranking.user.username,
+                  },
+              }))
+            : [],
+        fallback: true,
+    };
+};
+
+export const getStaticProps: GetStaticProps<Props> = async (context) => {
+    const { params } = context;
+
+    if (typeof params?.username !== "string")
+        return { props: { player: null, scores: null }, revalidate: 30 };
+
+    const token = await fetchGuestToken();
 
     const player = await fetchPlayer(params.username, token?.accessToken);
 
     if (!player) {
-        return { props: { player: null, scores: null } };
+        return { props: { player: null, scores: null }, revalidate: 30 };
     }
 
-    const scores = await fetchBestScores(player.id, token?.accessToken);
+    // const scores = await fetchBestScores(player.id, token?.accessToken);
 
-    return { props: { player, scores } };
+    return { props: { player, scores: [] }, revalidate: 30 };
 };
 
 export default PlayerPage;

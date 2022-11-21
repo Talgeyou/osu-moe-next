@@ -12,6 +12,7 @@
 
         &::placeholder {
             color: transparent;
+            pointer-events: none;
         }
 
         &:focus {
@@ -29,6 +30,7 @@
     }
 
     &_Label {
+        pointer-events: none;
         position: absolute;
         top: 9px;
         left: 9px;

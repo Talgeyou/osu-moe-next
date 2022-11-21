@@ -102,6 +102,7 @@ export function getRankScatterOptions(
         },
         scales: {
             x: {
+                offset: true,
                 ticks: {
                     stepSize: 1,
                     callback: (value, index, values) => {

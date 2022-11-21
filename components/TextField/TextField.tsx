@@ -1,4 +1,4 @@
-import React, { ComponentProps, memo, useCallback } from "react";
+import React, { ComponentProps, ForwardedRef, memo, useCallback } from "react";
 import { TextFieldPayload } from "./types";
 import classNames from "classnames";
 import styles from "./TextField.module.scss";
@@ -13,7 +13,10 @@ type OwnProps = {
 
 type Props = OwnProps & Omit<ComponentProps<"input">, keyof OwnProps>;
 
-function TextField({ className, name, value, label, onChange, ...otherProps }: Props) {
+const WrappedTextField = React.forwardRef(function TextField(
+    { className, name, value, label, onChange, ...otherProps }: Props,
+    ref: ForwardedRef<HTMLInputElement>,
+) {
     const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
         (event) => {
             if (onChange) {
@@ -31,11 +34,12 @@ function TextField({ className, name, value, label, onChange, ...otherProps }: P
                 value={value}
                 placeholder={`Enter the ${label || name || "value"}`}
                 onChange={handleChange}
+                ref={ref}
                 {...otherProps}
             />
             {label && <label className={styles["TextField_Label"]}>{label}</label>}
         </div>
     );
-}
+});
 
-export default memo(TextField);
+export default memo(WrappedTextField);

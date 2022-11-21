@@ -1,38 +1,24 @@
-import { Button, Layout, TextField } from "components";
-import { TextFieldPayload } from "components/TextField";
+import React from "react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { Form } from "components";
+import { FormSubmitHandler } from "components/Form";
 
 type Props = {};
 
 function PlayerForm({}: Props) {
     const router = useRouter();
-    const [username, setUsername] = useState("");
 
-    const handleChange = ({ name, value }: TextFieldPayload) => {
-        if (typeof name === "string" && typeof value === "string") {
-            setUsername(value);
+    const handleSubmit: FormSubmitHandler = ({ username }) => {
+        if (typeof username === "string") {
+            router.push(`/player/${username}`);
         }
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        router.push(`/player/${username}`);
-    };
-
     return (
-        <Layout>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label={"Username"}
-                    name={"username"}
-                    value={username}
-                    required
-                    onChange={handleChange}
-                />
-                <Button type={"submit"}>Submit</Button>
-            </form>
-        </Layout>
+        <Form
+            fields={[{ key: "username", label: "Username", autoFocus: true, required: true }]}
+            onSubmit={handleSubmit}
+        />
     );
 }
 

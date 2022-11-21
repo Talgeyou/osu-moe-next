@@ -15,7 +15,6 @@ type Props = {
 };
 
 function getSidebarItems(items: MenuItem[], currentPath: string) {
-    console.log(currentPath);
     return (
         <ul className={styles["Sidebar_Items"]}>
             {items.map((item) => (
