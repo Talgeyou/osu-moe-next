@@ -8,10 +8,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
     return (
-        <html>
-            <head>
-                <title>osu!Moe</title>
-            </head>
+        <html lang={"en"}>
             <body>
                 <Layout>{children}</Layout>
             </body>

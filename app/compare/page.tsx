@@ -3,7 +3,6 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import Form, { FormSubmitHandler } from "components/Form";
-import Head from "next/head";
 
 type Props = {};
 
@@ -18,9 +17,6 @@ function CompareForm({}: Props) {
 
     return (
         <>
-            <Head>
-                <title>osu!Moe | Comparing players</title>
-            </Head>
             <Form
                 fields={[
                     { key: "player1", label: "Player 1", required: true, autoFocus: true },
