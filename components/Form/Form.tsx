@@ -1,4 +1,6 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+"use client";
+
+import React, { memo, useCallback, useRef } from "react";
 import { FormField, FormSubmitHandler, FormSubmitPayload } from "./types";
 import styles from "./Form.module.scss";
 import TextField from "components/TextField";

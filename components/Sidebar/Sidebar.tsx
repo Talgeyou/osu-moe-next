@@ -1,29 +1,33 @@
-import React, { memo, ReactNode, useMemo } from "react";
+"use client";
+
+import React, { memo, ReactNode, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { getSession, signIn, signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import classNames from "classnames";
 import Icon from "components/Icon";
+import Button from "components/Button";
 import { MenuItem } from "types/layout.types";
 import { IconName } from "types/icon.types";
 import styles from "./Sidebar.module.scss";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Button from "components/Button";
 
 type Props = {
     menuItems: MenuItem[];
     className?: string;
 };
 
-function getSidebarItems(items: MenuItem[], currentPath: string) {
+function getSidebarItems(items: MenuItem[], currentPath: string | null) {
     return (
         <ul className={styles["Sidebar_Items"]}>
             {items.map((item) => (
                 <li key={item.key} className={styles["Sidebar_Item"]}>
                     <Link
                         className={classNames(styles["Sidebar_Link"], {
-                            [styles["Sidebar_Link_active"]]: item.url.slice(1)
-                                ? currentPath.slice(1).startsWith(item.url.slice(1))
-                                : item.url === currentPath,
+                            [styles["Sidebar_Link_active"]]: currentPath
+                                ? item.url.slice(1)
+                                    ? currentPath.slice(1).startsWith(item.url.slice(1))
+                                    : item.url === currentPath
+                                : false,
                         })}
                         href={item.url}
                     >
@@ -38,32 +42,29 @@ function getSidebarItems(items: MenuItem[], currentPath: string) {
 }
 
 function Sidebar({ menuItems, className }: Props) {
-    const router = useRouter();
-    const { status } = useSession();
+    const pathname = usePathname();
+    const [isAuth, setIsAuth] = useState(false);
+
+    useEffect(() => {
+        getSession().then((session) => setIsAuth(Boolean(session)));
+    }, []);
 
     const actionButton: ReactNode = useMemo(() => {
-        switch (status) {
-            case "authenticated": {
-                return (
-                    <Button className={styles["Sidebar_Action"]} onClick={() => signOut()}>
-                        <Icon name={IconName.SignOut} className={styles["Sidebar_ActionIcon"]} />
-                        <span className={styles["Sidebar_ActionText"]}>Sign Out</span>
-                    </Button>
-                );
-            }
-            case "unauthenticated": {
-                return (
-                    <Button className={styles["Sidebar_Action"]} onClick={() => signIn("osu")}>
-                        <Icon name={IconName.SignIn} className={styles["Sidebar_ActionIcon"]} />
-                        <span className={styles["Sidebar_ActionText"]}>Sign In</span>
-                    </Button>
-                );
-            }
-            default: {
-                return null;
-            }
+        if (isAuth) {
+            return (
+                <Button className={styles["Sidebar_Action"]} onClick={() => signOut()}>
+                    <Icon name={IconName.SignOut} className={styles["Sidebar_ActionIcon"]} />
+                    <span className={styles["Sidebar_ActionText"]}>Sign Out</span>
+                </Button>
+            );
         }
-    }, [status]);
+        return (
+            <Button className={styles["Sidebar_Action"]} onClick={() => signIn("osu")}>
+                <Icon name={IconName.SignIn} className={styles["Sidebar_ActionIcon"]} />
+                <span className={styles["Sidebar_ActionText"]}>Sign In</span>
+            </Button>
+        );
+    }, [isAuth]);
 
     return (
         <aside className={classNames(styles["Sidebar"], className)}>
@@ -73,7 +74,7 @@ function Sidebar({ menuItems, className }: Props) {
                 </div>
                 <span className={styles["Sidebar_LogoText"]}>osu!Moe</span>
             </div>
-            {getSidebarItems(menuItems, router.pathname)}
+            {getSidebarItems(menuItems, pathname)}
             <div className={styles["Sidebar_Actions"]}>{actionButton}</div>
         </aside>
     );

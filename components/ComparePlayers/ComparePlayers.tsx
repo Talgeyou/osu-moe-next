@@ -1,3 +1,5 @@
+"use client";
+
 import React, { memo, useMemo } from "react";
 import Image from "next/image";
 import classNames from "classnames";
@@ -36,10 +38,10 @@ Chart.register(
     LineElement,
 );
 
-type Props = { players: { player: OsuUser; scores: OsuScore[] }[] };
+type Props = { data: { player: OsuUser; scores: OsuScore[] }[] };
 
-function ComparePlayers({ players }: Props) {
-    const playersList = useMemo(() => players.map(({ player }) => player), [players]);
+function ComparePlayers({ data }: Props) {
+    const playersList = useMemo(() => data.map(({ player }) => player), [data]);
 
     const rankScatterProps = getRankScatterProps(playersList);
     const accuracyBarProps = getAccuracyBarProps(playersList);
@@ -51,7 +53,7 @@ function ComparePlayers({ players }: Props) {
     return (
         <section className={styles["ComparePlayers"]}>
             <div className={styles["ComparePlayers_Header"]}>
-                {players.map(({ player }) => {
+                {data.map(({ player }) => {
                     return (
                         <div key={player.id} className={styles["ComparePlayers_Player"]}>
                             <div className={styles["ComparePlayers_Image"]}>

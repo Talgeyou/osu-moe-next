@@ -1,3 +1,5 @@
+"use client";
+
 import React, { memo, useMemo } from "react";
 import Image from "next/image";
 import { OsuScore, OsuUser } from "types/osu.types";
@@ -8,7 +10,6 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 import { getGradesData } from "./helpers";
 import Chip from "components/Chip";
 import ScoresList from "components/ScoresList";
-import { useMediaQuery } from "hooks";
 
 Chart.register(ArcElement, Tooltip, Legend);
 

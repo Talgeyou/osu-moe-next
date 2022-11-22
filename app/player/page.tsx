@@ -1,12 +1,12 @@
+"use client";
+
 import React from "react";
-import { useRouter } from "next/router";
+import Head from "next/head";
+import { useRouter } from "next/navigation";
 import { Form } from "components";
 import { FormSubmitHandler } from "components/Form";
-import Head from "next/head";
 
-type Props = {};
-
-function PlayerForm({}: Props) {
+function PlayerForm() {
     const router = useRouter();
 
     const handleSubmit: FormSubmitHandler = ({ username }) => {
