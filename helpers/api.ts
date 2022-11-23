@@ -1,6 +1,6 @@
 import axios from "axios";
 import { JWT } from "next-auth/jwt";
-import { OsuUser } from "types/osu.types";
+import { OsuScore, OsuUser } from "types/osu.types";
 
 export async function fetchPlayer(username: string, token?: string): Promise<OsuUser | null> {
     return await fetch(`https://osu.ppy.sh/api/v2/users/${username}/osu`, {
@@ -18,7 +18,7 @@ export async function fetchPlayer(username: string, token?: string): Promise<Osu
         });
 }
 
-export async function fetchBestScores(userId: number, token?: string) {
+export async function fetchBestScores(userId: number, token?: string): Promise<OsuScore[] | null> {
     return await fetch(`https://osu.ppy.sh/api/v2/users/${userId}/scores/best?mode=osu&limit=100`, {
         credentials: "include",
         next: {
@@ -33,6 +33,18 @@ export async function fetchBestScores(userId: number, token?: string) {
             console.log(e.message);
             return null;
         });
+}
+
+export async function fetchBestPlayers(token?: string): Promise<{ user: OsuUser }[] | null> {
+    return await fetch("https://osu.ppy.sh/api/v2/rankings/osu/performance", {
+        credentials: "include",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    })
+        .then((res) => res.json())
+        .then((data) => data.ranking)
+        .catch((e) => console.log(e.message));
 }
 
 export async function fetchGuestToken(): Promise<JWT | null> {

@@ -6,7 +6,7 @@ type Props = {
     };
 };
 
-function ComparingPageHeasd({ params: { usernames } }: Props) {
+function ComparingPageHead({ params: { usernames } }: Props) {
     return (
         <>
             <title>{`osu!Moe | Comparing ${usernames.map((player) => player).join(", ")}`}</title>
@@ -20,4 +20,4 @@ function ComparingPageHeasd({ params: { usernames } }: Props) {
     );
 }
 
-export default ComparingPageHeasd;
+export default ComparingPageHead;

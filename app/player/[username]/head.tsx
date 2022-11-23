@@ -7,7 +7,6 @@ type Props = {
 };
 
 function PlayerPageHead({ params: { username } }: Props) {
-    console.log(username);
     return (
         <>
             <title>{`osu!Moe | ${username} statistics`}</title>
